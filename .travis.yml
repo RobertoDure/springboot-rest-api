@@ -23,6 +23,7 @@ before_install:
   - sudo apt-get autoremove
   - sudo apt-get autoclean
   - sudo apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confnew" install libmysqlclient-dev libmysqlclient18 mysql-client mysql-server
+  - mysql -u root -e "CREATE DATABASE school"
   - mysql -u root -e "CREATE USER 'travis'@'%' IDENTIFIED BY 'travis'"
   - mysql -u root -e "CREATE USER 'travis'@'localhost' IDENTIFIED BY 'travis'"
   - mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO 'travis'@'%'"
