@@ -6,6 +6,12 @@ create table student
   name  varchar(255) not null
 );
 
+
+INSERT INTO student VALUES (1,'john@email.com','John');
+INSERT INTO student VALUES (2,'jane@email.com','Jane');
+INSERT INTO student VALUES (3,'billy@email.com','Billy');
+INSERT INTO student VALUES (4,'miranda@email.com','Miranda');
+
 create table user
 (
   id       bigint auto_increment
@@ -17,11 +23,5 @@ create table user
   constraint UK_sb8bbouer5wak8vyiiy4pf2bx
     unique (username)
 );
-
 INSERT INTO user VALUES (1,1,'admin','$2a$10$VmLuwadDdAaiVawGjqSJyuzYFLg115DQ5QyOJFcfZWZBGFBepJQja','admin');
 
-
-INSERT INTO student VALUES (1,'john@email.com','John');
-INSERT INTO student VALUES (2,'jane@email.com','Jane');
-INSERT INTO student VALUES (3,'billy@email.com','Billy');
-INSERT INTO student VALUES (4,'miranda@email.com','Miranda');
