@@ -2,10 +2,14 @@ Spring API
 
 Execute the command −
 
-mvn clean install and Run SpringBootAplication
+mvn clean install 
+
+and 
+
+Run SpringBootAplication
 
 
-REST Documantation
+REST Documentation
 
 URL path: /v2/api-docs
 
