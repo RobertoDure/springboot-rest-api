@@ -16,4 +16,6 @@ dist: trusty
 sudo: required
 
 before_script:
-  - mysql -e 'create database school;'
+  - mysql -u root -e 'CREATE DATABASE school;'
+  - mysql -u root -e "CREATE USER 'admin'@'localhost' IDENTIFIED BY 'admin';"
+  - mysql -u root -e "GRANT ALL ON school.* TO 'admin'@'localhost';"
