@@ -1,5 +1,6 @@
 package pt.com.springboot.api;
 
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import pt.com.springboot.api.model.Student;
 import pt.com.springboot.api.repository.StudentRepository;
 import org.junit.Rule;
@@ -18,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
-//@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class StudentRepositoryTest {
     @Autowired
     private StudentRepository studentRepository;
@@ -27,7 +28,7 @@ public class StudentRepositoryTest {
 
     @Test
     public void createShouldPersistData() {
-        Student student = new Student("Roberto", "robertodure1990@gmail.com");
+        Student student = new Student("Roberto", "robertodure1990@gmail.com",1,1);
         this.studentRepository.save(student);
         assertThat(student.getId()).isNotNull();
         assertThat(student.getName()).isEqualTo("Roberto");
@@ -36,7 +37,7 @@ public class StudentRepositoryTest {
 
     @Test
     public void deleteShouldRemoveData() {
-        Student student = new Student("Roberto", "robertodure1990@gmail.com");
+        Student student = new Student("Roberto", "robertodure1990@gmail.com",1,1);
         this.studentRepository.save(student);
         studentRepository.delete(student);
         assertThat(studentRepository.findOne(student.getId())).isNull();
@@ -44,7 +45,7 @@ public class StudentRepositoryTest {
 
     @Test
     public void updateShouldChangeAndPersistData() {
-        Student student = new Student("Roberto", "robertodure1990@gmail.com");
+        Student student = new Student("Roberto", "robertodure1990@gmail.com",1,1);
         this.studentRepository.save(student);
         student.setName("Roberto Duré");
         student.setEmail("robertodure1990@gmail.com");
@@ -56,8 +57,8 @@ public class StudentRepositoryTest {
 
     @Test
     public void findByNameIgnoreCaseContainingShouldIgnoreCase() {
-        Student student = new Student("Roberto", "robertodure1990@gmail.com");
-        Student student2 = new Student("roberto", "robertodure@gmail.com");
+        Student student = new Student("Roberto", "robertodure1990@gmail.com",1,1);
+        Student student2 = new Student("roberto", "robertodure@gmail.com",1,1);
         this.studentRepository.save(student);
         this.studentRepository.save(student2);
         List<Student> studentList = studentRepository.findByNameIgnoreCaseContaining("roberto");
@@ -87,5 +88,4 @@ public class StudentRepositoryTest {
         student.setEmail("roberto");
         this.studentRepository.save(student);
     }
-
 }

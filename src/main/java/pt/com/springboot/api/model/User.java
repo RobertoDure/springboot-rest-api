@@ -1,7 +1,6 @@
 package pt.com.springboot.api.model;
 
 import org.hibernate.validator.constraints.NotEmpty;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
@@ -16,7 +15,7 @@ public class User extends AbstractEntity {
     private String name;
     @NotEmpty
     private boolean admin;
-
+    
     public String getUsername() {
         return username;
     }

@@ -2,27 +2,28 @@ package pt.com.springboot.api.model;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-public class Student extends AbstractEntity {
+public class Teacher extends AbstractEntity {
+
     @NotEmpty(message = "Not Empty")
     private String name;
     @NotEmpty
     @Email(message = "Not an Email")
     private String email;
-    @NotNull
-    private int idTeacher;
+    @NotEmpty
+    private String subject;
     @NotNull
     private int idClassroom;
 
-    public Student() {}
-    public Student(String name, String email, int idTeacher, int idClassroom) {
+
+    public Teacher() {}
+    public Teacher(String name, String email, String subject, int idClassroom) {
         this.name = name;
         this.email = email;
-        this.idTeacher = idTeacher;
+        this.subject = subject;
         this.idClassroom = idClassroom;
     }
 
@@ -42,12 +43,12 @@ public class Student extends AbstractEntity {
         this.email = email;
     }
 
-    public int getIdTeacher() {
-        return idTeacher;
+    public String getSubject() {
+        return subject;
     }
 
-    public void setIdTeacher(int idTeacher) {
-        this.idTeacher = idTeacher;
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 
     public int getIdClassroom() {

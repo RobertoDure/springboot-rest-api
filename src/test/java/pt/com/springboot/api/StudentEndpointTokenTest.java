@@ -64,44 +64,44 @@ public class StudentEndpointTokenTest {
 
     @Before
     public void setup() {
-        Student student = new Student(1L, "Aleck", "aleck@gmail.com");
+        Student student = new Student("Aleck", "aleck@gmail.com", 1,1);
         BDDMockito.when(studentRepository.findOne(student.getId())).thenReturn(student);
     }
 
     @Test
     public void listStudentsWhenTokenIsIncorrectShouldReturnStatusCode403() {
-        ResponseEntity<String> response = restTemplate.exchange("/v1/protected/students/",GET,wrongHeader, String.class);
+        ResponseEntity<String> response = restTemplate.exchange("/v1/students/",GET,wrongHeader, String.class);
         Assertions.assertThat(response.getStatusCodeValue()).isEqualTo(403);
     }
 
     @Test
     public void getStudentsByIdWhenTokenIsIncorrectShouldReturnStatusCode403() {
-        ResponseEntity<String> response = restTemplate.exchange("/v1/protected/students/1",GET,wrongHeader, String.class);
+        ResponseEntity<String> response = restTemplate.exchange("/v1/students/1",GET,wrongHeader, String.class);
         Assertions.assertThat(response.getStatusCodeValue()).isEqualTo(403);
     }
 
     @Test
     public void listStudentsWhenTokenIsCorrectShouldReturnStatusCode200() {
-        ResponseEntity<String> response = restTemplate.exchange("/v1/protected/students/1",GET,protectedHeader, String.class);
+        ResponseEntity<String> response = restTemplate.exchange("/v1/students/1",GET,protectedHeader, String.class);
         Assertions.assertThat(response.getStatusCodeValue()).isEqualTo(200);
     }
 
     @Test
     public void getStudentsByIdWhenTokenIsCorrectShouldReturnStatusCode200() {
-        ResponseEntity<Student> response = restTemplate.exchange("/v1/protected/students/1",GET,protectedHeader, Student.class);
+        ResponseEntity<Student> response = restTemplate.exchange("/v1/students/1",GET,protectedHeader, Student.class);
         Assertions.assertThat(response.getStatusCodeValue()).isEqualTo(200);
     }
 
     @Test
     public void getStudentsByIdWhenTokenIsCorrectAndStudentDoesNotExistShouldReturnStatusCode404() {
-        ResponseEntity<Student> response = restTemplate.exchange("/v1/protected/students/-1",GET,protectedHeader, Student.class);
+        ResponseEntity<Student> response = restTemplate.exchange("/v1/students/-1",GET,protectedHeader, Student.class);
         Assertions.assertThat(response.getStatusCodeValue()).isEqualTo(404);
     }
 
     @Test
     public void deleteWhenUserHasRoleAdminAndStudentExistsShouldReturnStatusCode200() {
         BDDMockito.doNothing().when(studentRepository).delete(1L);
-        ResponseEntity<String> exchange = restTemplate.exchange("/v1/admin/students/1",DELETE,adminHeader, String.class);
+        ResponseEntity<String> exchange = restTemplate.exchange("/v1/students/1",DELETE,adminHeader, String.class);
         Assertions.assertThat(exchange.getStatusCodeValue()).isEqualTo(200);
     }
 
@@ -110,7 +110,7 @@ public class StudentEndpointTokenTest {
         String token = adminHeader.getHeaders().get("Authorization").get(0);
         BDDMockito.doNothing().when(studentRepository).delete(1L);
         mockMvc.perform(MockMvcRequestBuilders
-                .delete("/v1/admin/students/{id}", -1L).header("Authorization",token))
+                .delete("/v1/students/{id}", -1L).header("Authorization",token))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
@@ -119,24 +119,24 @@ public class StudentEndpointTokenTest {
         String token = protectedHeader.getHeaders().get("Authorization").get(0);
         BDDMockito.doNothing().when(studentRepository).delete(1L);
         mockMvc.perform(MockMvcRequestBuilders
-                .delete("/v1/admin/students/{id}", 1L).header("Authorization",token))
+                .delete("/v1/students/{id}", 1L).header("Authorization",token))
                 .andExpect(MockMvcResultMatchers.status().isForbidden());
     }
 
     @Test
     public void createWhenNameIsNullShouldReturnStatusCode400BadRequest() throws Exception {
-        Student student = new Student(3L, null, "rob@gmail.com");
+        Student student = new Student( null, "rob@gmail.com",1,1);
         BDDMockito.when(studentRepository.save(student)).thenReturn(student);
-        ResponseEntity<String> response = restTemplate.exchange("/v1/admin/students/",POST, new HttpEntity<>(student,adminHeader.getHeaders()), String.class);
+        ResponseEntity<String> response = restTemplate.exchange("/v1/students/",POST, new HttpEntity<>(student,adminHeader.getHeaders()), String.class);
         Assertions.assertThat(response.getStatusCodeValue()).isEqualTo(400);
         Assertions.assertThat(response.getBody()).contains("fieldMessage", "Not Empity...");
     }
 
     @Test
     public void createShouldPersistDataAndReturnStatusCode201() throws Exception {
-        Student student = new Student(3L, "Gil", "gil@gmail.com");
+        Student student = new Student("Gil", "gil@gmail.com",1,1);
         BDDMockito.when(studentRepository.save(student)).thenReturn(student);
-        ResponseEntity<Student> response = restTemplate.exchange("/v1/admin/students/",POST, new HttpEntity<>(student,adminHeader.getHeaders()), Student.class);
+        ResponseEntity<Student> response = restTemplate.exchange("/v1/students/",POST, new HttpEntity<>(student,adminHeader.getHeaders()), Student.class);
         Assertions.assertThat(response.getStatusCodeValue()).isEqualTo(201);
         Assertions.assertThat(response.getBody().getId()).isNotNull();
     }
