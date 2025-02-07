@@ -1,35 +1,24 @@
 package pt.com.springboot.api.model;
 
+import lombok.Data;
+import lombok.ToString;
 import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
+@Data
+@ToString
 @Entity
-public class Classroom extends AbstractEntity{
+public class Classroom {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    protected Long id;
+
     @NotNull
     private int capacity;
+
     @NotEmpty
     private String classroomName;
-
-    public Classroom() {}
-    public Classroom(int capacity, String classroomName) {
-        this.capacity = capacity;
-        this.classroomName = classroomName;
-    }
-
-    public int getCapacity() {
-        return capacity;
-    }
-
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
-    }
-
-    public String getClassroomName() {
-        return classroomName;
-    }
-
-    public void setClassroomName(String classroomName) {
-        this.classroomName = classroomName;
-    }
 }

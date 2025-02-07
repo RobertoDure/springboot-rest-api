@@ -1,6 +1,6 @@
 package pt.com.springboot.api.config;
 
-import pt.com.springboot.api.service.CustomUserDetailService;
+import pt.com.springboot.api.service.impl.CustomUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -24,7 +24,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues())
                 .and().csrf().disable()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, SIGN_UP_URL).permitAll()
+                .antMatchers(HttpMethod.POST, "/v1/**").hasRole("ADMIN") // Allow access to POST requests for ADMIN role
+                .antMatchers(HttpMethod.PUT, "/v1/**").hasRole("ADMIN") // Allow access to PUT requests for ADMIN role
+                .antMatchers(HttpMethod.DELETE, "/v1/**").hasRole("ADMIN") // Allow access to DELETE requests for ADMIN role
+                .antMatchers("/v1/**").authenticated() // Allow access to authenticated users for other methods
                 .and()
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()))
                 .addFilter(new JWTAuthorizationFilter(authenticationManager(), customUserDetailService));

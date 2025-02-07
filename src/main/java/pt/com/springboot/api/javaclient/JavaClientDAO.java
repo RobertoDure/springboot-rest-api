@@ -13,12 +13,12 @@ import java.util.List;
 
 public class JavaClientDAO {
     private RestTemplate restTemplate = new RestTemplateBuilder()
-            .rootUri("http://localhost:8080/v1/protected/students")
+            .rootUri("http://localhost:8080/v1/student")
             .basicAuthorization("rob", "123")
             .errorHandler(new RestResponseExceptionHandler())
             .build();
     private RestTemplate restTemplateAdmin = new RestTemplateBuilder()
-            .rootUri("http://localhost:8080/v1/admin/students")
+            .rootUri("http://localhost:8080/v1/student")
             .basicAuthorization("rob", "123")
             .errorHandler(new RestResponseExceptionHandler())
             .build();

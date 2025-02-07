@@ -1,60 +1,30 @@
 package pt.com.springboot.api.model;
 
-import org.hibernate.validator.constraints.Email;
+import lombok.Data;
+import lombok.ToString;
 import org.hibernate.validator.constraints.NotEmpty;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
+@Data
+@ToString
 @Entity
 public class Student extends AbstractEntity {
-    @NotEmpty(message = "Not Empty")
-    private String name;
-    @NotEmpty
-    @Email(message = "Not an Email")
-    private String email;
-    @NotNull
-    private int idTeacher;
-    @NotNull
-    private int idClassroom;
 
-    public Student() {}
-    public Student(String name, String email, int idTeacher, int idClassroom) {
-        this.name = name;
-        this.email = email;
-        this.idTeacher = idTeacher;
-        this.idClassroom = idClassroom;
-    }
+    @NotNull(message = "Teacher ID cannot be null")
+    private Long idTeacher;
 
-    public String getName() {
-        return name;
-    }
+    @NotEmpty(message = "Guardian name cannot be empty")
+    private String guardianName;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    @NotEmpty(message = "Guardian contact cannot be empty")
+    private String guardianContact;
 
-    public String getEmail() {
-        return email;
-    }
+    @OneToMany
+    private List<Grade> grades;
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    @OneToMany
+    private List<Lecture> lectures;
 
-    public int getIdTeacher() {
-        return idTeacher;
-    }
-
-    public void setIdTeacher(int idTeacher) {
-        this.idTeacher = idTeacher;
-    }
-
-    public int getIdClassroom() {
-        return idClassroom;
-    }
-
-    public void setIdClassroom(int idClassroom) {
-        this.idClassroom = idClassroom;
-    }
 }

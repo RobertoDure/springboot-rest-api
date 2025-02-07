@@ -17,7 +17,7 @@ public class JavaClientTest {
         String user = "rob";
         String password = "123";
         try {
-            URL url = new URL("http://localhost:8080/v1/protected/students/1");
+            URL url = new URL("http://localhost:8080/v1/student/1");
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.addRequestProperty("Authorization", "Basic " + encodeUsernamePassword(user, password));

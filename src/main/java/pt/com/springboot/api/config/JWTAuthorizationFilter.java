@@ -1,6 +1,6 @@
 package pt.com.springboot.api.config;
 
-import pt.com.springboot.api.service.CustomUserDetailService;
+import pt.com.springboot.api.service.impl.CustomUserDetailService;
 import io.jsonwebtoken.Jwts;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

@@ -1,61 +1,26 @@
 package pt.com.springboot.api.model;
 
-import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import java.util.List;
+
 
 @Entity
-public class Teacher extends AbstractEntity {
+public class Teacher extends AbstractEntity{
 
-    @NotEmpty(message = "Not Empty")
-    private String name;
-    @NotEmpty
-    @Email(message = "Not an Email")
-    private String email;
-    @NotEmpty
+    @NotEmpty(message = "Phone number cannot be empty")
+    private String phoneNumber;
+
+    @NotEmpty(message = "Subject cannot be empty")
     private String subject;
-    @NotNull
-    private int idClassroom;
 
+    @NotEmpty(message = "Highest degree cannot be empty")
+    private String highestDegree;
 
-    public Teacher() {}
-    public Teacher(String name, String email, String subject, int idClassroom) {
-        this.name = name;
-        this.email = email;
-        this.subject = subject;
-        this.idClassroom = idClassroom;
-    }
+    @NotEmpty(message = "Years of experience cannot be empty")
+    private String yearsOfExperience;
 
-    public String getName() {
-        return name;
-    }
+    @OneToMany
+    private List<Lecture> lectures;
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getSubject() {
-        return subject;
-    }
-
-    public void setSubject(String subject) {
-        this.subject = subject;
-    }
-
-    public int getIdClassroom() {
-        return idClassroom;
-    }
-
-    public void setIdClassroom(int idClassroom) {
-        this.idClassroom = idClassroom;
-    }
 }

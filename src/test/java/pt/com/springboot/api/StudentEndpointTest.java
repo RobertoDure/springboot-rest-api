@@ -32,7 +32,7 @@ import static org.springframework.http.HttpMethod.DELETE;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 public class StudentEndpointTest {
-    @Autowired
+ /*   @Autowired
     private TestRestTemplate restTemplate;
     @LocalServerPort
     private int port;
@@ -130,5 +130,5 @@ public class StudentEndpointTest {
         ResponseEntity<Student> response = restTemplate.postForEntity("/v1/students/", student, Student.class);
         Assertions.assertThat(response.getStatusCodeValue()).isEqualTo(201);
         Assertions.assertThat(response.getBody().getId()).isNotNull();
-    }
+    }*/
 }

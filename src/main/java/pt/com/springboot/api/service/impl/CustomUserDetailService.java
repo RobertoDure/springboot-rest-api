@@ -1,4 +1,4 @@
-package pt.com.springboot.api.service;
+package pt.com.springboot.api.service.impl;
 
 import pt.com.springboot.api.model.User;
 import pt.com.springboot.api.repository.UserRepository;

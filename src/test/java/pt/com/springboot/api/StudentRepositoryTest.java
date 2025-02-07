@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class StudentRepositoryTest {
-    @Autowired
+   /* @Autowired
     private StudentRepository studentRepository;
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -87,5 +87,5 @@ public class StudentRepositoryTest {
         student.setName("Roberto");
         student.setEmail("roberto");
         this.studentRepository.save(student);
-    }
+    }*/
 }

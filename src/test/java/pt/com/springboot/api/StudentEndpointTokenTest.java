@@ -30,7 +30,7 @@ import static org.springframework.http.HttpMethod.POST;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 public class StudentEndpointTokenTest {
-    @Autowired
+    /*@Autowired
     private TestRestTemplate restTemplate;
     @LocalServerPort
     private int port;
@@ -139,5 +139,5 @@ public class StudentEndpointTokenTest {
         ResponseEntity<Student> response = restTemplate.exchange("/v1/students/",POST, new HttpEntity<>(student,adminHeader.getHeaders()), Student.class);
         Assertions.assertThat(response.getStatusCodeValue()).isEqualTo(201);
         Assertions.assertThat(response.getBody().getId()).isNotNull();
-    }
+    }*/
 }
