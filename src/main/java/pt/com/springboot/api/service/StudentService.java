@@ -11,10 +11,9 @@ import java.util.List;
  */
 public interface StudentService {
 
-    Student getStudentById(Long id);
-    List<Student> findByNameIgnoreCaseContaining(String name);
+    List<Student> getStudentQueryFilter(String filter, String filterValue);
     Page<Student> listAll(Pageable pageable);
     boolean saveStudent(Student student);
-    boolean deleteStudent(Long id);
+    boolean deleteStudent(String id);
     boolean updateStudent(Student student);
 }

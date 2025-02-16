@@ -1,5 +1,6 @@
 package pt.com.springboot.api.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.ToString;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -29,6 +30,7 @@ public class AbstractEntity implements Serializable {
     @NotEmpty(message = "Address cannot be empty")
     private String address;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM-dd-yyyy")
     @NotNull(message = "Date of birth cannot be null")
     private Date dateOfBirth;
 

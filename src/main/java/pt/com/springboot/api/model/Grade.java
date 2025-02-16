@@ -1,5 +1,6 @@
 package pt.com.springboot.api.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,6 +21,7 @@ public class Grade {
     @GeneratedValue(strategy = GenerationType.AUTO)
     protected Long id;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM-dd-yyyy")
     @NotEmpty(message = "Grade Date cannot be empty")
     private Date gradeDate;
 
