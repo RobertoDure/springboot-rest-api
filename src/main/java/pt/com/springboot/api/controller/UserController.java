@@ -35,7 +35,10 @@ public class UserController {
     // Email recovery
     @GetMapping("/{email}")
     public String getEmailRecovery(@PathVariable("email") String email) {
-        return "UserController";
+
+        userService.sendRecoveryEmail(email);
+
+        return "Email sent";
     }
 
     @PostMapping

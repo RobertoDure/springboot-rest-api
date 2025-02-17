@@ -2,6 +2,9 @@ package pt.com.springboot.api.service.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import pt.com.springboot.api.PasswordEncoder;
 import pt.com.springboot.api.error.InternalServerErrorException;
 import pt.com.springboot.api.model.User;
@@ -24,9 +27,11 @@ public class CustomUserDetailService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
-    @Autowired
-    public CustomUserDetailService(UserRepository userRepository) {
+    private final JavaMailSender mailSender;
+
+    public CustomUserDetailService(UserRepository userRepository, JavaMailSender mailSender) {
         this.userRepository = userRepository;
+        this.mailSender = mailSender;
     }
 
     @Override
@@ -70,4 +75,21 @@ public class CustomUserDetailService implements UserDetailsService {
         users.forEach(user -> user.setPassword("************"));
         return users;
     }
+
+    /**
+     * Send email to user with a link to recover the password
+     * @param email
+     */
+    public void sendRecoveryEmail(String email) {
+        // Send email to user with a link to recover the password
+        // Use a library like JavaMailSender to send the email
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("password_recovery@school.com");
+        message.setTo(email);
+        message.setSubject("Password Recovery");
+        message.setText("Click here to recover your password: <link:http://localhost:8080/api/v1/user/recover/>");
+        mailSender.send(message);
+        logger.info("Email sent to: {}", email);
+    }
+
 }

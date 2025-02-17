@@ -132,6 +132,7 @@ create table user
     constraint UK_sb8bbouer5wak8vyiiy4pf2bx
         unique (username)
 );
+
 INSERT INTO user VALUES (1,1,'admin','$2a$10$VmLuwadDdAaiVawGjqSJyuzYFLg115DQ5QyOJFcfZWZBGFBepJQja','admin');
 
 -- Populate classroom table
