@@ -1,4 +1,4 @@
-package pt.com.springboot.api.endpoint;
+package pt.com.springboot.api.controller;
 
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +17,12 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("v1/classrooms")
-public class ClassroomEndpoint {
+public class ClassroomController {
 
     private final ClassroomRepository classDAO;
 
     @Autowired
-    public ClassroomEndpoint(ClassroomRepository classDAO) {
+    public ClassroomController(ClassroomRepository classDAO) {
         this.classDAO = classDAO;
     }
 

@@ -1,4 +1,4 @@
-package pt.com.springboot.api.endpoint;
+package pt.com.springboot.api.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -18,11 +18,11 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/teacher")
 @Api(value = "Teacher Endpoint", description = "A REST API for Teacher", tags = {"Teacher Endpoint"})
-public class TeacherEndpoint {
+public class TeacherController {
 
     private final TeacherService teacherService;
 
-    public TeacherEndpoint(TeacherService teacherDAO) {
+    public TeacherController(TeacherService teacherDAO) {
         this.teacherService = teacherDAO;
     }
 

@@ -1,6 +1,6 @@
 package pt.com.springboot.api.handler;
 
-import pt.com.springboot.api.config.TransactionContextHolder;
+import org.slf4j.MDC;
 import pt.com.springboot.api.error.details.InternalServerErrorDetails;
 import pt.com.springboot.api.error.InternalServerErrorException;
 import pt.com.springboot.api.error.details.ResourceNotFoundDetails;
@@ -17,7 +17,6 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,7 +43,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 .status(HttpStatus.NOT_FOUND.value())
                 .title("Resource not found")
                 .detail(rfnException.getMessage())
-                .transactionId(TransactionContextHolder.getTransactionId())
+                .transactionId(MDC.get("transactionId"))
                 .build();
         return new ResponseEntity<>(rnfDetails, HttpStatus.NOT_FOUND);
     }
@@ -71,7 +70,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 .status(HttpStatus.BAD_REQUEST.value())
                 .title("Field Validation Error")
                 .detail("Field Validation Error")
-                .transactionId(TransactionContextHolder.getTransactionId())
+                .transactionId(MDC.get("transactionId"))
                 .field(fields)
                 .fieldMessage(fieldMessages)
                 .build();
@@ -90,7 +89,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 .status(HttpStatus.NOT_FOUND.value())
                 .title("Internal Server Error")
                 .detail(intException.getMessage())
-                .transactionId(TransactionContextHolder.getTransactionId())
+                .transactionId(MDC.get("transactionId"))
                 .build();
         return new ResponseEntity<>(rnfDetails, HttpStatus.NOT_FOUND);
     }

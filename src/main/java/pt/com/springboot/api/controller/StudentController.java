@@ -1,9 +1,9 @@
-package pt.com.springboot.api.endpoint;
+package pt.com.springboot.api.controller;
 
 import io.swagger.annotations.Api;
+import org.slf4j.MDC;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
-import pt.com.springboot.api.config.TransactionContextHolder;
 import pt.com.springboot.api.error.BadRequestException;
 import pt.com.springboot.api.model.Student;
 import org.springframework.data.domain.Pageable;
@@ -18,18 +18,17 @@ import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 
-
 /**
  * Methods POST, PUT and DELETE are only allowed for users with ADMIN role
  */
 @RestController
 @RequestMapping("api/v1/student")
 @Api(value = "Student Endpoint", description = "A REST API for students", tags = {"Student Endpoint"})
-public class StudentEndpoint {
+public class StudentController {
 
-     final private StudentService studentService;
+    final private StudentService studentService;
 
-    public StudentEndpoint(StudentService studentService) {
+    public StudentController(StudentService studentService) {
         this.studentService = studentService;
     }
 
@@ -46,7 +45,7 @@ public class StudentEndpoint {
     public ResponseEntity<?> listAll(@RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
                                      @RequestParam(value = "size", required = false, defaultValue = "10") Integer size) {
         HashMap<String, String> headers = new HashMap<>();
-        headers.put("transactionId", TransactionContextHolder.getTransactionId());
+        headers.put("transactionId", MDC.get("transactionId"));
         Pageable pageable = new PageRequest(page, size);
         return new ResponseEntity<>(studentService.listAll(pageable), HttpHeadersUtil.setHttpHeaders(headers), HttpStatus.OK);
     }
@@ -65,7 +64,7 @@ public class StudentEndpoint {
             throw new BadRequestException("Filter not Valid: " + filter);
         }
         HashMap<String, String> headers = new HashMap<>();
-        headers.put("transactionId", TransactionContextHolder.getTransactionId());
+        headers.put("transactionId", MDC.get("transactionId"));
         List<Student> student = studentService.getStudentQueryFilter(filter, filterValue);
         return new ResponseEntity<>(student, HttpHeadersUtil.setHttpHeaders(headers), HttpStatus.OK);
     }
@@ -79,7 +78,7 @@ public class StudentEndpoint {
             throw new BadRequestException("Student not saved: " + student);
         }
         HashMap<String, String> headers = new HashMap<>();
-        headers.put("transactionId", TransactionContextHolder.getTransactionId());
+        headers.put("transactionId", MDC.get("transactionId"));
         return new ResponseEntity<>(HttpHeadersUtil.setHttpHeaders(headers), HttpStatus.CREATED);
     }
 
@@ -89,14 +88,18 @@ public class StudentEndpoint {
         if(ServiceValidator.idValid(id)){
             throw new BadRequestException("ID not Valid: " + id);
         }
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("transactionId", MDC.get("transactionId"));
         studentService.deleteStudent(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpHeadersUtil.setHttpHeaders(headers), HttpStatus.OK);
     }
     @PutMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> update(@RequestBody Student student) {
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("transactionId", MDC.get("transactionId"));
         studentService.updateStudent(student);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+        return new ResponseEntity<>(HttpHeadersUtil.setHttpHeaders(headers), HttpStatus.OK);
+    }  
 
 }

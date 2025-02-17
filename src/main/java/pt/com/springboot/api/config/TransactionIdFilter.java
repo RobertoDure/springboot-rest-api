@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.UUID;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
+import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -25,12 +26,14 @@ public class TransactionIdFilter implements Filter {
         if (transactionId == null || transactionId.isEmpty()) {
             transactionId = UUID.randomUUID().toString();
         }
-        // Store transactionId in our custom ThreadLocal context holder
-        TransactionContextHolder.setTransactionId(transactionId);
+
+        // Also add it to MDC so it appears automatically in log messages
+        MDC.put("transactionId", transactionId);
         try {
             chain.doFilter(request, response);
+            MDC.clear();
         } finally {
-            TransactionContextHolder.clear();
+            MDC.clear();
         }
     }
 

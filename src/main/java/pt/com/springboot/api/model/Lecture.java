@@ -25,9 +25,11 @@ public class Lecture {
 
     @NotEmpty(message = "Description cannot be empty")
     private String description;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM-dd-yyyy")
     @NotNull(message = "Starting Date cannot be null")
     private Date startDate;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM-dd-yyyy")
     @NotNull(message = "Ending Date cannot be null")
     private Date endDate;

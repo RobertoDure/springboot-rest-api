@@ -24,6 +24,6 @@ public class User {
     @NotEmpty
     private String name;
 
-    @NotEmpty
+    @Column(columnDefinition = "boolean default false")
     private boolean admin;
 }

@@ -1,6 +1,7 @@
 package pt.com.springboot.api.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.*;
@@ -8,6 +9,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 @ToString
 @Entity
 public class Student extends AbstractEntity {
@@ -21,10 +23,10 @@ public class Student extends AbstractEntity {
     @NotEmpty(message = "Guardian contact cannot be empty")
     private String guardianContact;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Grade> grades;
 
-    @OneToMany
+    @ManyToMany
     private List<Lecture> lectures;
 
 }
