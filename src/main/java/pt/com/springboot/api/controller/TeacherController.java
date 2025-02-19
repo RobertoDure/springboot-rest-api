@@ -43,7 +43,7 @@ public class TeacherController {
     @GetMapping (path = "/query")
     public ResponseEntity<?> getTeacherQuery(@RequestParam(value = "filter", required = false) String filter,
                                              @RequestParam(value = "filterValue", required = false) String filterValue) {
-        if(!ServiceValidator.filterValidation(filter, filterValue)){
+        if(ServiceValidator.filterValidation(filter, filterValue)){
             throw new BadRequestException("Filter not Valid: " + filter);
         }
         List<Teacher> teacher = teacherService.getTeacherQueryFilter(filter, filterValue);

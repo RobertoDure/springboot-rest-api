@@ -129,11 +129,12 @@ create table user
     name     varchar(255) not null,
     password varchar(255) not null,
     username varchar(255) not null,
+    email    varchar(255) not null,
     constraint UK_sb8bbouer5wak8vyiiy4pf2bx
         unique (username)
 );
 
-INSERT INTO user VALUES (1,1,'admin','$2a$10$VmLuwadDdAaiVawGjqSJyuzYFLg115DQ5QyOJFcfZWZBGFBepJQja','admin');
+INSERT INTO user VALUES (1,1,'admin','$2a$10$VmLuwadDdAaiVawGjqSJyuzYFLg115DQ5QyOJFcfZWZBGFBepJQja','admin', 'admin@admin.com');
 
 -- Populate classroom table
 INSERT INTO classroom (capacity, classroom_name) VALUES (30, 'Room A');

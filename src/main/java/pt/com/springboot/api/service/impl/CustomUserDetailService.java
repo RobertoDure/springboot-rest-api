@@ -17,8 +17,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class CustomUserDetailService implements UserDetailsService {
@@ -29,6 +33,9 @@ public class CustomUserDetailService implements UserDetailsService {
 
     private final JavaMailSender mailSender;
 
+    // Add a map to store recovery tokens with expiration
+    private final Map<String, RecoveryToken> recoveryTokens = new ConcurrentHashMap<>();
+
     public CustomUserDetailService(UserRepository userRepository, JavaMailSender mailSender) {
         this.userRepository = userRepository;
         this.mailSender = mailSender;
@@ -36,13 +43,19 @@ public class CustomUserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = Optional.ofNullable(userRepository.findByUsername(username))
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        List<GrantedAuthority> authorityListAdmin = AuthorityUtils.createAuthorityList("ROLE_USER", "ROLE_ADMIN");
-        List<GrantedAuthority> authorityListUser = AuthorityUtils.createAuthorityList("ROLE_USER");
-        return new org.springframework.security.core.userdetails.User
-                (user.getUsername(), user.getPassword(), user.isAdmin() ? authorityListAdmin : authorityListUser);
-
+        try{
+            logger.info("Starting Load User By Username service");
+            logger.debug("Username: {}", username);
+            User user = Optional.ofNullable(userRepository.findByUsername(username))
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+            List<GrantedAuthority> authorityListAdmin = AuthorityUtils.createAuthorityList("ROLE_USER", "ROLE_ADMIN");
+            List<GrantedAuthority> authorityListUser = AuthorityUtils.createAuthorityList("ROLE_USER");
+            return new org.springframework.security.core.userdetails.User
+                    (user.getUsername(), user.getPassword(), user.isAdmin() ? authorityListAdmin : authorityListUser);
+        } catch (Exception e) {
+            logger.error("Error trying to load user by username: {}", e.getMessage());
+            throw new UsernameNotFoundException("User not found");
+        }
     }
 
     /**
@@ -68,12 +81,35 @@ public class CustomUserDetailService implements UserDetailsService {
         }
     }
 
+    /**
+     * List all users
+     * @return List of users
+     */
     public List<User> listAll() {
         // Do no return password
         List<User> users = userRepository.findAll();
         //Hide password
         users.forEach(user -> user.setPassword("************"));
         return users;
+    }
+
+    public User findByUsername(String username) {
+
+        return userRepository.findByUsername(username);
+    }
+
+    /**
+     * Find user by email
+     * @param email
+     * @return User
+     */
+    public User findByEmail(String email) {
+
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+        return userRepository.findByEmail(email);
     }
 
     /**
@@ -83,13 +119,70 @@ public class CustomUserDetailService implements UserDetailsService {
     public void sendRecoveryEmail(String email) {
         // Send email to user with a link to recover the password
         // Use a library like JavaMailSender to send the email
+        User user = findByEmail(email);
+        String recoveryHash = UUID.randomUUID().toString();
+
+        // Store the recovery token
+        recoveryTokens.put(recoveryHash, new RecoveryToken(email));
+
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("password_recovery@school.com");
         message.setTo(email);
         message.setSubject("Password Recovery");
-        message.setText("Click here to recover your password: <link:http://localhost:8080/api/v1/user/recover/>");
+        message.setText("Click here to recover your password: http://localhost:8080/api/v1/user/recover/" + recoveryHash);
         mailSender.send(message);
-        logger.info("Email sent to: {}", email);
+        logger.info("Recovery email sent to: {}", email);
+    }
+
+    /**
+     * Validate recovery hash
+     * @param hash
+     * @return true if hash is valid, false otherwise
+     */
+    public boolean validateRecoveryHash(String hash) {
+        RecoveryToken token = recoveryTokens.get(hash);
+        if (token != null && token.isValid()) {
+            // Token is valid
+            return true;
+        }
+        // Remove invalid token
+        recoveryTokens.remove(hash);
+        return false;
+    }
+    /**
+     * Update user password
+     * @param hash
+     * @param newPassword
+     * @return true if password was updated, false otherwise
+     */
+    public boolean updatePassword(String hash, String newPassword) {
+        RecoveryToken token = recoveryTokens.get(hash);
+        if (token != null && token.isValid()) {
+            User user = findByEmail(token.userEmail);
+            user.setPassword(PasswordEncoder.encoder(newPassword));
+            userRepository.save(user);
+            // Remove used token
+            recoveryTokens.remove(hash);
+            return true;
+        }
+        return false;
+    }
+   /**
+     * Inner class to store recovery token
+     */
+
+    private static class RecoveryToken {
+        String userEmail;
+        LocalDateTime expirationTime;
+
+        RecoveryToken(String userEmail) {
+            this.userEmail = userEmail;
+            this.expirationTime = LocalDateTime.now().plusHours(1); // Token expires in 1 hour
+        }
+
+        boolean isValid() {
+            return LocalDateTime.now().isBefore(expirationTime);
+        }
     }
 
 }

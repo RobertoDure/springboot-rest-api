@@ -54,13 +54,6 @@ public class ClassroomController {
         classDAO.save(classroom);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    @DeleteMapping
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
-        verifyIfStudentExists(id);
-        classDAO.delete(id);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
 
     private void verifyIfStudentExists(Long id){
         if (classDAO.findOne(id) == null)

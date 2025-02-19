@@ -60,7 +60,7 @@ public class StudentController {
     @GetMapping (path = "/query")
     public ResponseEntity<?> getStudentQuery(@RequestParam(value = "filter", required = false) String filter,
                                              @RequestParam(value = "filterValue", required = false) String filterValue) {
-        if(!ServiceValidator.filterValidation(filter, filterValue)){
+        if(ServiceValidator.filterValidation(filter, filterValue)){
             throw new BadRequestException("Filter not Valid: " + filter);
         }
         HashMap<String, String> headers = new HashMap<>();

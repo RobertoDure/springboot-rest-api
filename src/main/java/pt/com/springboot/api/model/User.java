@@ -19,6 +19,7 @@ public class User {
     private String username;
 
     @NotEmpty
+    @ToString.Exclude
     private String password;
 
     @NotEmpty
@@ -26,4 +27,8 @@ public class User {
 
     @Column(columnDefinition = "boolean default false")
     private boolean admin;
+
+    @NotEmpty
+    @Column(unique = true)
+    private String email;
 }
