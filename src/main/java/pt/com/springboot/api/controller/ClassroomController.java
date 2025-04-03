@@ -35,7 +35,7 @@ public class ClassroomController {
     @GetMapping(path = "/{id}")
     public ResponseEntity<?> getStudentById(@PathVariable("id") Long id, Authentication authentication) {
         System.out.println(authentication);
-        verifyIfStudentExists(id);
+        verifyIfClassExists(id);
         Classroom classroom = classDAO.findOne(id);
         return new ResponseEntity<>(classroom, HttpStatus.OK);
     }
@@ -50,12 +50,12 @@ public class ClassroomController {
     @PutMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> update(@RequestBody Classroom classroom) {
-        verifyIfStudentExists(classroom.getId());
+        verifyIfClassExists(classroom.getId());
         classDAO.save(classroom);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    private void verifyIfStudentExists(Long id){
+    private void verifyIfClassExists(Long id){
         if (classDAO.findOne(id) == null)
             throw new ResourceNotFoundException("Teacher not found for ID: "+id);
     }

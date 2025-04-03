@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import pt.com.springboot.api.error.BadRequestException;
 import pt.com.springboot.api.model.User;
-import pt.com.springboot.api.service.impl.CustomUserDetailService;
+import pt.com.springboot.api.service.impl.CustomUserDetailServiceImpl;
 import pt.com.springboot.api.util.HttpHeadersUtil;
 
 import javax.validation.Valid;
@@ -19,9 +19,9 @@ import java.util.HashMap;
 @Api(value = "User Endpoint", description = "A REST API for users", tags = {"User Endpoint"})
 public class UserController {
 
-    private final CustomUserDetailService userService;
+    private final CustomUserDetailServiceImpl userService;
 
-    public UserController(CustomUserDetailService userService) {
+    public UserController(CustomUserDetailServiceImpl userService) {
         this.userService = userService;
     }
 

@@ -14,7 +14,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import pt.com.springboot.api.error.InternalServerErrorException;
 import pt.com.springboot.api.repository.UserRepository;
-import pt.com.springboot.api.service.impl.CustomUserDetailService;
+import pt.com.springboot.api.service.impl.CustomUserDetailServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,7 @@ class CustomUserDetailServiceTest {
     private JavaMailSender mailSender;
 
     @InjectMocks
-    private CustomUserDetailService customUserDetailService;
+    private CustomUserDetailServiceImpl customUserDetailServiceImpl;
 
     private User testUser;
 
@@ -49,7 +49,7 @@ class CustomUserDetailServiceTest {
     @Test
     void loadUserByUsername_existingUser_returnsUserDetails() {
         when(userRepository.findByUsername("johndoe")).thenReturn(testUser);
-        UserDetails userDetails = customUserDetailService.loadUserByUsername("johndoe");
+        UserDetails userDetails = customUserDetailServiceImpl.loadUserByUsername("johndoe");
         assertNotNull(userDetails);
         assertEquals("johndoe", userDetails.getUsername());
         // Check that the roles are as expected for non-admin
@@ -61,7 +61,7 @@ class CustomUserDetailServiceTest {
     void loadUserByUsername_nonExistingUser_throwsException() {
         when(userRepository.findByUsername("nonexistent")).thenReturn(null);
         assertThrows(UsernameNotFoundException.class, () -> {
-            customUserDetailService.loadUserByUsername("nonexistent");
+            customUserDetailServiceImpl.loadUserByUsername("nonexistent");
         });
     }
 
@@ -69,7 +69,7 @@ class CustomUserDetailServiceTest {
     void saveUser_validUser_returnsTrue() {
         // Given a valid user, when saveUser is called, it encodes password before saving
         when(userRepository.save(any(User.class))).thenReturn(testUser);
-        boolean result = customUserDetailService.saveUser(testUser);
+        boolean result = customUserDetailServiceImpl.saveUser(testUser);
         // The password should have been encoded. Here we assume that PasswordEncoder.encoder returns a different value.
         assertNotEquals("password", testUser.getPassword());
         assertTrue(result);
@@ -80,7 +80,7 @@ class CustomUserDetailServiceTest {
     void saveUser_exceptionThrown_throwsInternalServerErrorException() {
         when(userRepository.save(any(User.class))).thenThrow(new RuntimeException("DB error"));
         InternalServerErrorException ex = assertThrows(InternalServerErrorException.class,
-            () -> customUserDetailService.saveUser(testUser));
+            () -> customUserDetailServiceImpl.saveUser(testUser));
         assertEquals("DB error", ex.getMessage());
     }
 
@@ -93,7 +93,7 @@ class CustomUserDetailServiceTest {
         users.add(user1);
         when(userRepository.findAll()).thenReturn(users);
 
-        List<User> result = customUserDetailService.listAll();
+        List<User> result = customUserDetailServiceImpl.listAll();
         assertEquals(1, result.size());
         // Password should be replaced with ************
         assertEquals("************", result.get(0).getPassword());
@@ -102,7 +102,7 @@ class CustomUserDetailServiceTest {
     @Test
     void findByUsername_existingUser_returnsUser() {
         when(userRepository.findByUsername("johndoe")).thenReturn(testUser);
-        User user = customUserDetailService.findByUsername("johndoe");
+        User user = customUserDetailServiceImpl.findByUsername("johndoe");
         assertNotNull(user);
         assertEquals("johndoe", user.getUsername());
     }
@@ -110,7 +110,7 @@ class CustomUserDetailServiceTest {
     @Test
     void findByEmail_existingUser_returnsUser() {
         when(userRepository.findByEmail("john@example.com")).thenReturn(testUser);
-        User user = customUserDetailService.findByEmail("john@example.com");
+        User user = customUserDetailServiceImpl.findByEmail("john@example.com");
         assertNotNull(user);
         assertEquals("john@example.com", user.getEmail());
     }
@@ -119,7 +119,7 @@ class CustomUserDetailServiceTest {
     void findByEmail_nonExistingUser_throwsException() {
         when(userRepository.findByEmail("nonexistent@example.com")).thenReturn(null);
         assertThrows(UsernameNotFoundException.class, () -> {
-            customUserDetailService.findByEmail("nonexistent@example.com");
+            customUserDetailServiceImpl.findByEmail("nonexistent@example.com");
         });
     }
 
@@ -127,7 +127,7 @@ class CustomUserDetailServiceTest {
     void sendRecoveryEmail_andValidateRecoveryHash() {
         when(userRepository.findByEmail("john@example.com")).thenReturn(testUser);
         // Call sendRecoveryEmail. This will generate a random recovery token and call mailSender.send.
-        customUserDetailService.sendRecoveryEmail("john@example.com");
+        customUserDetailServiceImpl.sendRecoveryEmail("john@example.com");
 
         // Capture the SimpleMailMessage argument that was sent to the mailSender
         ArgumentCaptor<SimpleMailMessage> messageCaptor = ArgumentCaptor.forClass(SimpleMailMessage.class);
@@ -145,7 +145,7 @@ class CustomUserDetailServiceTest {
         assertDoesNotThrow(() -> UUID.fromString(recoveryHash));
 
         // Now, validate the recovery hash using validateRecoveryHash
-        boolean isValid = customUserDetailService.validateRecoveryHash(recoveryHash);
+        boolean isValid = customUserDetailServiceImpl.validateRecoveryHash(recoveryHash);
         assertTrue(isValid);
     }
 
@@ -153,7 +153,7 @@ class CustomUserDetailServiceTest {
     void updatePassword_validToken_updatesPassword() {
         when(userRepository.findByEmail("john@example.com")).thenReturn(testUser);
         // Send recovery email to add a token
-        customUserDetailService.sendRecoveryEmail("john@example.com");
+        customUserDetailServiceImpl.sendRecoveryEmail("john@example.com");
 
         // Capture the recovery hash from the sent email.
         ArgumentCaptor<SimpleMailMessage> messageCaptor = ArgumentCaptor.forClass(SimpleMailMessage.class);
@@ -163,7 +163,7 @@ class CustomUserDetailServiceTest {
 
         // Update password using the valid token
         String newRawPassword = "newpassword";
-        boolean updateResult = customUserDetailService.updatePassword(recoveryHash, newRawPassword);
+        boolean updateResult = customUserDetailServiceImpl.updatePassword(recoveryHash, newRawPassword);
         assertTrue(updateResult);
         // Verify that save was called on the repository with an updated password.
         verify(userRepository, times(1)).save(any(User.class));
@@ -174,7 +174,7 @@ class CustomUserDetailServiceTest {
     @Test
     void updatePassword_invalidToken_returnsFalse() {
         // If token does not exist, updatePassword should return false.
-        boolean updateResult = customUserDetailService.updatePassword("invalid-hash", "newpassword");
+        boolean updateResult = customUserDetailServiceImpl.updatePassword("invalid-hash", "newpassword");
         assertFalse(updateResult);
     }
 }

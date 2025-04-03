@@ -18,11 +18,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Service implementation for managing students.
+ * This class provides methods to perform CRUD operations on students.
+ */
+
 @Service
 public class StudentServiceImpl implements StudentService {
 
     private static final Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class.getName());
-
 
     StudentRepository studentDAO;
 

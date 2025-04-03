@@ -25,9 +25,9 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
-public class CustomUserDetailService implements UserDetailsService {
+public class CustomUserDetailServiceImpl implements UserDetailsService {
 
-    private static final Logger logger = LoggerFactory.getLogger(CustomUserDetailService.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(CustomUserDetailServiceImpl.class.getName());
 
     private final UserRepository userRepository;
 
@@ -36,7 +36,7 @@ public class CustomUserDetailService implements UserDetailsService {
     // Add a map to store recovery tokens with expiration
     private final Map<String, RecoveryToken> recoveryTokens = new ConcurrentHashMap<>();
 
-    public CustomUserDetailService(UserRepository userRepository, JavaMailSender mailSender) {
+    public CustomUserDetailServiceImpl(UserRepository userRepository, JavaMailSender mailSender) {
         this.userRepository = userRepository;
         this.mailSender = mailSender;
     }
