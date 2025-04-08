@@ -1,11 +1,12 @@
 package pt.com.springboot.api.config;
 
-import java.io.IOException;
-import java.util.UUID;
-import javax.servlet.*;
-import javax.servlet.http.HttpServletRequest;
 import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
+
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.UUID;
 
 @Component
 public class TransactionIdFilter implements Filter {
@@ -39,6 +40,6 @@ public class TransactionIdFilter implements Filter {
 
     @Override
     public void destroy() {
-      // Do nothing
+        // Do nothing
     }
 }

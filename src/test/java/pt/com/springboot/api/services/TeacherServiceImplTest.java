@@ -16,6 +16,7 @@ import pt.com.springboot.api.error.ResourceNotFoundException;
 import pt.com.springboot.api.model.Teacher;
 import pt.com.springboot.api.repository.TeacherRepository;
 import pt.com.springboot.api.service.impl.TeacherServiceImpl;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;

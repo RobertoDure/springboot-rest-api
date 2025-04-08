@@ -78,13 +78,13 @@ paths:
                 type: object
         "401":
           description: Unauthorized
-          content: {}
+          content: { }
         "403":
           description: Forbidden
-          content: {}
+          content: { }
         "404":
           description: Not Found
-          content: {}
+          content: { }
     put:
       tags:
         - Student Endpoint
@@ -113,16 +113,16 @@ paths:
                 type: object
         "201":
           description: Created
-          content: {}
+          content: { }
         "401":
           description: Unauthorized
-          content: {}
+          content: { }
         "403":
           description: Forbidden
-          content: {}
+          content: { }
         "404":
           description: Not Found
-          content: {}
+          content: { }
       x-codegen-request-body-name: student
     post:
       tags:
@@ -152,16 +152,16 @@ paths:
                 type: object
         "201":
           description: Created
-          content: {}
+          content: { }
         "401":
           description: Unauthorized
-          content: {}
+          content: { }
         "403":
           description: Forbidden
-          content: {}
+          content: { }
         "404":
           description: Not Found
-          content: {}
+          content: { }
       x-codegen-request-body-name: student
   /api/v1/student/id/{id}:
     get:
@@ -192,13 +192,13 @@ paths:
                 type: object
         "401":
           description: Unauthorized
-          content: {}
+          content: { }
         "403":
           description: Forbidden
-          content: {}
+          content: { }
         "404":
           description: Not Found
-          content: {}
+          content: { }
   /api/v1/student/name/{name}:
     get:
       tags:
@@ -227,13 +227,13 @@ paths:
                 type: object
         "401":
           description: Unauthorized
-          content: {}
+          content: { }
         "403":
           description: Forbidden
-          content: {}
+          content: { }
         "404":
           description: Not Found
-          content: {}
+          content: { }
   /api/v1/student/{id}:
     delete:
       tags:
@@ -263,13 +263,13 @@ paths:
                 type: object
         "204":
           description: No Content
-          content: {}
+          content: { }
         "401":
           description: Unauthorized
-          content: {}
+          content: { }
         "403":
           description: Forbidden
-          content: {}
+          content: { }
   /api/v1/teacher:
     get:
       tags:
@@ -294,13 +294,13 @@ paths:
                   $ref: '#/components/schemas/Teacher'
         "401":
           description: Unauthorized
-          content: {}
+          content: { }
         "403":
           description: Forbidden
-          content: {}
+          content: { }
         "404":
           description: Not Found
-          content: {}
+          content: { }
     put:
       tags:
         - teacher-endpoint
@@ -329,16 +329,16 @@ paths:
                 $ref: '#/components/schemas/Teacher'
         "201":
           description: Created
-          content: {}
+          content: { }
         "401":
           description: Unauthorized
-          content: {}
+          content: { }
         "403":
           description: Forbidden
-          content: {}
+          content: { }
         "404":
           description: Not Found
-          content: {}
+          content: { }
       x-codegen-request-body-name: teacher
     post:
       tags:
@@ -368,16 +368,16 @@ paths:
                 $ref: '#/components/schemas/Teacher'
         "201":
           description: Created
-          content: {}
+          content: { }
         "401":
           description: Unauthorized
-          content: {}
+          content: { }
         "403":
           description: Forbidden
-          content: {}
+          content: { }
         "404":
           description: Not Found
-          content: {}
+          content: { }
       x-codegen-request-body-name: teacher
   /api/v1/teacher/id/{id}:
     get:
@@ -408,13 +408,13 @@ paths:
                 $ref: '#/components/schemas/Teacher'
         "401":
           description: Unauthorized
-          content: {}
+          content: { }
         "403":
           description: Forbidden
-          content: {}
+          content: { }
         "404":
           description: Not Found
-          content: {}
+          content: { }
   /api/v1/teacher/name/{name}:
     get:
       tags:
@@ -443,13 +443,13 @@ paths:
                 $ref: '#/components/schemas/Teacher'
         "401":
           description: Unauthorized
-          content: {}
+          content: { }
         "403":
           description: Forbidden
-          content: {}
+          content: { }
         "404":
           description: Not Found
-          content: {}
+          content: { }
   /api/v1/teacher/{id}:
     delete:
       tags:
@@ -479,13 +479,13 @@ paths:
                 type: object
         "204":
           description: No Content
-          content: {}
+          content: { }
         "401":
           description: Unauthorized
-          content: {}
+          content: { }
         "403":
           description: Forbidden
-          content: {}
+          content: { }
 components:
   schemas:
     Grade:

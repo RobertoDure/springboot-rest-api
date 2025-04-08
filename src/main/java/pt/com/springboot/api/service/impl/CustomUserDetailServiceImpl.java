@@ -4,18 +4,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
-import pt.com.springboot.api.PasswordEncoder;
-import pt.com.springboot.api.error.InternalServerErrorException;
-import pt.com.springboot.api.model.User;
-import pt.com.springboot.api.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
+import pt.com.springboot.api.PasswordEncoder;
+import pt.com.springboot.api.error.InternalServerErrorException;
+import pt.com.springboot.api.model.User;
+import pt.com.springboot.api.repository.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -43,7 +41,7 @@ public class CustomUserDetailServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        try{
+        try {
             logger.info("Starting Load User By Username service");
             logger.debug("Username: {}", username);
             User user = Optional.ofNullable(userRepository.findByUsername(username))
@@ -60,6 +58,7 @@ public class CustomUserDetailServiceImpl implements UserDetailsService {
 
     /**
      * Save user to database
+     *
      * @param user
      * @return
      */
@@ -83,6 +82,7 @@ public class CustomUserDetailServiceImpl implements UserDetailsService {
 
     /**
      * List all users
+     *
      * @return List of users
      */
     public List<User> listAll() {
@@ -100,6 +100,7 @@ public class CustomUserDetailServiceImpl implements UserDetailsService {
 
     /**
      * Find user by email
+     *
      * @param email
      * @return User
      */
@@ -114,6 +115,7 @@ public class CustomUserDetailServiceImpl implements UserDetailsService {
 
     /**
      * Send email to user with a link to recover the password
+     *
      * @param email
      */
     public void sendRecoveryEmail(String email) {
@@ -136,6 +138,7 @@ public class CustomUserDetailServiceImpl implements UserDetailsService {
 
     /**
      * Validate recovery hash
+     *
      * @param hash
      * @return true if hash is valid, false otherwise
      */
@@ -149,8 +152,10 @@ public class CustomUserDetailServiceImpl implements UserDetailsService {
         recoveryTokens.remove(hash);
         return false;
     }
+
     /**
      * Update user password
+     *
      * @param hash
      * @param newPassword
      * @return true if password was updated, false otherwise
@@ -167,7 +172,8 @@ public class CustomUserDetailServiceImpl implements UserDetailsService {
         }
         return false;
     }
-   /**
+
+    /**
      * Inner class to store recovery token
      */
 

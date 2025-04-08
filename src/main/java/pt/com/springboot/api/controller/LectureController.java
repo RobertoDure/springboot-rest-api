@@ -9,6 +9,7 @@ import pt.com.springboot.api.model.Lecture;
 import pt.com.springboot.api.service.LectureService;
 import pt.com.springboot.api.util.HttpHeadersUtil;
 import pt.com.springboot.api.util.ServiceValidator;
+
 import javax.validation.Valid;
 import java.util.HashMap;
 
@@ -32,7 +33,7 @@ public class LectureController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> get(@PathVariable("id") String id) {
-        if(ServiceValidator.idValid(id)){
+        if (ServiceValidator.idValid(id)) {
             throw new BadRequestException("ID not Valid: " + id);
         }
         HashMap<String, String> headers = new HashMap<>();
@@ -64,7 +65,7 @@ public class LectureController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(String id) {
 
-        if(ServiceValidator.idValid(id)){
+        if (ServiceValidator.idValid(id)) {
             throw new BadRequestException("ID not Valid: " + id);
         }
         HashMap<String, String> headers = new HashMap<>();

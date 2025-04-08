@@ -23,16 +23,16 @@ public class SwaggerConfig {
     public Docket apiDoc() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                    .apis(RequestHandlerSelectors.basePackage("pt.com.springboot.api.endpoint"))
-                    .paths(regex("/api/v1.*"))
-                    .build()
+                .apis(RequestHandlerSelectors.basePackage("pt.com.springboot.api.endpoint"))
+                .paths(regex("/api/v1.*"))
+                .build()
                 .globalOperationParameters(Collections.singletonList(new ParameterBuilder()
-                    .name("Authorization")
-                    .description("Bearer token")
-                    .modelRef(new ModelRef("string"))
-                    .parameterType("header")
-                    .required(true)
-                    .build()))
+                        .name("Authorization")
+                        .description("Bearer token")
+                        .modelRef(new ModelRef("string"))
+                        .parameterType("header")
+                        .required(true)
+                        .build()))
                 .apiInfo(metaData());
     }
 

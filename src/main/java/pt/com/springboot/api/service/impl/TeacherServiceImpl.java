@@ -10,6 +10,7 @@ import pt.com.springboot.api.error.ResourceNotFoundException;
 import pt.com.springboot.api.model.Teacher;
 import pt.com.springboot.api.repository.TeacherRepository;
 import pt.com.springboot.api.service.TeacherService;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -18,7 +19,6 @@ import java.util.Optional;
 /**
  * Teacher Service Implementation
  * API Version: 1.0
- *
  */
 @Service
 public class TeacherServiceImpl implements TeacherService {
@@ -35,11 +35,11 @@ public class TeacherServiceImpl implements TeacherService {
     public List<Teacher> getTeacherQueryFilter(String filter, String filterValue) {
         List<Teacher> teachers = new ArrayList<>();
         // Filter by id
-        if(filter.equals("id")){
+        if (filter.equals("id")) {
             try {
                 Long id = Long.parseLong(filterValue);
                 Optional<Teacher> teacher = Optional.ofNullable(teacherDAO.findOne(id));
-                if(!teacher.isPresent()){
+                if (!teacher.isPresent()) {
                     logger.debug("Teacher not found for ID: {}", id);
                     throw new ResourceNotFoundException("Teacher not found for ID: " + id);
                 }
@@ -52,7 +52,7 @@ public class TeacherServiceImpl implements TeacherService {
         }
         // Filter by name
         Optional<List<Teacher>> teacher = Optional.ofNullable(teacherDAO.findByNameIgnoreCaseContaining(filterValue));
-        if(!teacher.isPresent()){
+        if (!teacher.isPresent()) {
             logger.debug("Student not found for name: {}", filterValue);
             throw new ResourceNotFoundException("Student not found for Name: " + filterValue);
         }
@@ -87,32 +87,30 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     public boolean deleteTeacher(Long id) {
         boolean result = false;
-        if(teacherDAO.exists(id)){
-            try{
+        if (teacherDAO.exists(id)) {
+            try {
                 teacherDAO.delete(id);
                 return result = true;
             } catch (Exception e) {
                 logger.error("Error trying to delete teacher: {}", e.getMessage());
                 throw new InternalServerErrorException(e.getMessage());
             }
-        }
-        else{
+        } else {
             throw new ResourceNotFoundException("Teacher not found for ID: " + id);
         }
     }
 
     @Override
     public boolean updateTeacher(Teacher teacher) {
-        if(teacherDAO.exists(teacher.getId())){
-            try{
+        if (teacherDAO.exists(teacher.getId())) {
+            try {
                 teacherDAO.save(teacher);
                 return true;
             } catch (Exception e) {
                 logger.error("Error trying to update teacher: {}", e.getMessage());
                 throw new InternalServerErrorException(e.getMessage());
             }
-        }
-        else{
+        } else {
             throw new ResourceNotFoundException("Teacher not found for ID: " + teacher.getId());
         }
 

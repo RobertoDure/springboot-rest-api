@@ -44,7 +44,7 @@ public class ClassroomController {
     @PreAuthorize("hasRole('ADMIN')")
     @Transactional(rollbackFor = Exception.class)
     public ResponseEntity<?> save(@Valid @RequestBody Classroom classroom) {
-        return new ResponseEntity<>(classDAO.save(classroom),HttpStatus.CREATED);
+        return new ResponseEntity<>(classDAO.save(classroom), HttpStatus.CREATED);
     }
 
     @PutMapping
@@ -55,8 +55,8 @@ public class ClassroomController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    private void verifyIfClassExists(Long id){
+    private void verifyIfClassExists(Long id) {
         if (classDAO.findOne(id) == null)
-            throw new ResourceNotFoundException("Teacher not found for ID: "+id);
+            throw new ResourceNotFoundException("Teacher not found for ID: " + id);
     }
 }

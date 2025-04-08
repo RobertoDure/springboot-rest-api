@@ -3,6 +3,7 @@ package pt.com.springboot.api.model;
 import lombok.Data;
 import lombok.ToString;
 import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.persistence.*;
 
 @Data

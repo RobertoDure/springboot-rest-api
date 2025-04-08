@@ -34,6 +34,7 @@ public class MailConfig {
 
     /**
      * JavaMailSender configuration
+     *
      * @return
      */
     @Bean

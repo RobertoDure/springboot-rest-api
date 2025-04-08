@@ -6,13 +6,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import pt.com.springboot.api.model.User;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import pt.com.springboot.api.error.InternalServerErrorException;
+import pt.com.springboot.api.model.User;
 import pt.com.springboot.api.repository.UserRepository;
 import pt.com.springboot.api.service.impl.CustomUserDetailServiceImpl;
 
@@ -80,7 +80,7 @@ class CustomUserDetailServiceTest {
     void saveUser_exceptionThrown_throwsInternalServerErrorException() {
         when(userRepository.save(any(User.class))).thenThrow(new RuntimeException("DB error"));
         InternalServerErrorException ex = assertThrows(InternalServerErrorException.class,
-            () -> customUserDetailServiceImpl.saveUser(testUser));
+                () -> customUserDetailServiceImpl.saveUser(testUser));
         assertEquals("DB error", ex.getMessage());
     }
 

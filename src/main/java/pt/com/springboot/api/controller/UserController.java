@@ -29,14 +29,14 @@ public class UserController {
     public ResponseEntity<?> listAll() {
         HashMap<String, String> headers = new HashMap<>();
         headers.put("transactionId", MDC.get("transactionId"));
-        return new ResponseEntity<>(userService.listAll() ,HttpHeadersUtil.setHttpHeaders(headers), HttpStatus.OK);
+        return new ResponseEntity<>(userService.listAll(), HttpHeadersUtil.setHttpHeaders(headers), HttpStatus.OK);
     }
 
     @PostMapping
     @Transactional(rollbackFor = Exception.class)
     public ResponseEntity<?> save(@Valid @RequestBody User user) {
         boolean userSaved = userService.saveUser(user);
-        if (!userSaved ) {
+        if (!userSaved) {
             throw new BadRequestException("Student not saved: " + userSaved);
         }
         HashMap<String, String> headers = new HashMap<>();

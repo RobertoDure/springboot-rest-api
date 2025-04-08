@@ -1,7 +1,5 @@
 package pt.com.springboot.api.error.details;
 
-import java.time.LocalDateTime;
-
 public class ValidationErrorDetails extends ErrorDetails {
     private String field;
     private String fieldMessage;
@@ -14,6 +12,7 @@ public class ValidationErrorDetails extends ErrorDetails {
         private String transactionId;
         private String field;
         private String fieldMessage;
+
         private Builder() {
         }
 

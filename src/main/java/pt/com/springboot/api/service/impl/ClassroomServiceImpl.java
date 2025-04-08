@@ -10,6 +10,7 @@ import pt.com.springboot.api.error.ResourceNotFoundException;
 import pt.com.springboot.api.model.Classroom;
 import pt.com.springboot.api.repository.ClassroomRepository;
 import pt.com.springboot.api.service.ClassroomService;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -82,16 +83,15 @@ public class ClassroomServiceImpl implements ClassroomService {
 
     @Override
     public boolean updateClassroom(Classroom classroom) {
-        if(classroomDAO.exists(classroom.getId())){
-            try{
+        if (classroomDAO.exists(classroom.getId())) {
+            try {
                 classroomDAO.save(classroom);
                 return true;
             } catch (Exception e) {
                 logger.error("Error trying to update classroom: {}", e.getMessage());
                 throw new InternalServerErrorException(e.getMessage());
             }
-        }
-        else{
+        } else {
             throw new ResourceNotFoundException("Classroom not found for ID: " + classroom.getId());
         }
     }

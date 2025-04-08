@@ -1,12 +1,14 @@
 package pt.com.springboot.api.model;
 
 import org.hibernate.validator.constraints.NotEmpty;
-import javax.persistence.*;
+
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import java.util.List;
 
 
 @Entity
-public class Teacher extends AbstractEntity{
+public class Teacher extends AbstractEntity {
 
     @NotEmpty(message = "Phone number cannot be empty")
     private String phoneNumber;

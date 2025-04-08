@@ -1,7 +1,6 @@
 package pt.com.springboot.api.config;
 
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import pt.com.springboot.api.model.User;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -10,6 +9,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import pt.com.springboot.api.model.User;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
