@@ -1,12 +1,12 @@
 package pt.com.springboot.api.config;
 
-import pt.com.springboot.api.service.CustomUserDetailService;
 import io.jsonwebtoken.Jwts;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import pt.com.springboot.api.service.impl.CustomUserDetailServiceImpl;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -18,11 +18,11 @@ import static pt.com.springboot.api.config.SecurityConstants.*;
 
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
-    private final CustomUserDetailService customUserDetailService;
+    private final CustomUserDetailServiceImpl customUserDetailServiceImpl;
 
-    public JWTAuthorizationFilter(AuthenticationManager authenticationManager, CustomUserDetailService customUserDetailService) {
+    public JWTAuthorizationFilter(AuthenticationManager authenticationManager, CustomUserDetailServiceImpl customUserDetailServiceImpl) {
         super(authenticationManager);
-        this.customUserDetailService = customUserDetailService;
+        this.customUserDetailServiceImpl = customUserDetailServiceImpl;
     }
 
     @Override
@@ -46,7 +46,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
                 .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
                 .getBody()
                 .getSubject();
-        UserDetails userDetails = customUserDetailService.loadUserByUsername(username);
+        UserDetails userDetails = customUserDetailServiceImpl.loadUserByUsername(username);
         return username != null ?
                 new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities()) : null;
     }

@@ -1,4 +1,4 @@
-package pt.com.springboot.api.error;
+package pt.com.springboot.api.error.details;
 
 public class ValidationErrorDetails extends ErrorDetails {
     private String field;
@@ -8,10 +8,11 @@ public class ValidationErrorDetails extends ErrorDetails {
         private String title;
         private int status;
         private String detail;
-        private long timestamp;
-        private String developerMessage;
+        private String timestamp;
+        private String transactionId;
         private String field;
         private String fieldMessage;
+
         private Builder() {
         }
 
@@ -34,13 +35,13 @@ public class ValidationErrorDetails extends ErrorDetails {
             return this;
         }
 
-        public Builder timestamp(long timestamp) {
+        public Builder timestamp(String timestamp) {
             this.timestamp = timestamp;
             return this;
         }
 
-        public Builder developerMessage(String developerMessage) {
-            this.developerMessage = developerMessage;
+        public Builder transactionId(String transactionId) {
+            this.transactionId = transactionId;
             return this;
         }
 
@@ -56,7 +57,7 @@ public class ValidationErrorDetails extends ErrorDetails {
 
         public ValidationErrorDetails build() {
             ValidationErrorDetails validationErrorDetails = new ValidationErrorDetails();
-            validationErrorDetails.setDeveloperMessage(developerMessage);
+            validationErrorDetails.setTransactionId(transactionId);
             validationErrorDetails.setTitle(title);
             validationErrorDetails.setDetail(detail);
             validationErrorDetails.setTimestamp(timestamp);

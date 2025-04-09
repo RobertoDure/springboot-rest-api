@@ -1,53 +1,36 @@
 package pt.com.springboot.api.model;
 
-import org.hibernate.validator.constraints.Email;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
+import java.util.List;
 
-
+@Data
+@EqualsAndHashCode(callSuper = true)
+@ToString
 @Entity
 public class Student extends AbstractEntity {
-    @NotEmpty(message = "Not Empty")
-    private String name;
-    @NotEmpty
-    @Email(message = "Not an Email")
-    private String email;
 
-    public Student() {
-    }
+    @NotNull(message = "Teacher ID cannot be null")
+    private Long idTeacher;
 
-    public Student(String name, String email) {
-        this.name = name;
-        this.email = email;
-    }
-    public Student(Long id, String name, String email) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-    }
+    @NotEmpty(message = "Guardian name cannot be empty")
+    private String guardianName;
 
-    @Override
-    public String toString() {
-        return "Student{" +
-                "name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                '}';
-    }
+    @NotEmpty(message = "Guardian contact cannot be empty")
+    private String guardianContact;
 
-    public String getEmail() {
-        return email;
-    }
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Grade> grades;
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    @ManyToMany
+    private List<Lecture> lectures;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }

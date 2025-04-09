@@ -1,4 +1,4 @@
-package pt.com.springboot.api.error;
+package pt.com.springboot.api.error.details;
 
 
 public class CustomErrorType {

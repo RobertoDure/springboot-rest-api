@@ -1,4 +1,4 @@
-package pt.com.springboot.api.error;
+package pt.com.springboot.api.error.details;
 
 
 public class ResourceNotFoundDetails extends ErrorDetails {
@@ -7,48 +7,48 @@ public class ResourceNotFoundDetails extends ErrorDetails {
         private String title;
         private int status;
         private String detail;
-        private long timestamp;
-        private String developerMessage;
+        private String timestamp;
+        private String transactionId;
 
         private Builder() {
         }
 
-        public static Builder newBuilder() {
-            return new Builder();
+        public static ResourceNotFoundDetails.Builder newBuilder() {
+            return new ResourceNotFoundDetails.Builder();
         }
 
-        public Builder title(String title) {
+        public ResourceNotFoundDetails.Builder title(String title) {
             this.title = title;
             return this;
         }
 
-        public Builder status(int status) {
+        public ResourceNotFoundDetails.Builder status(int status) {
             this.status = status;
             return this;
         }
 
-        public Builder detail(String detail) {
+        public ResourceNotFoundDetails.Builder detail(String detail) {
             this.detail = detail;
             return this;
         }
 
-        public Builder timestamp(long timestamp) {
+        public ResourceNotFoundDetails.Builder timestamp(String timestamp) {
             this.timestamp = timestamp;
             return this;
         }
 
-        public Builder developerMessage(String developerMessage) {
-            this.developerMessage = developerMessage;
+        public ResourceNotFoundDetails.Builder transactionId(String transactionId) {
+            this.transactionId = transactionId;
             return this;
         }
 
         public ResourceNotFoundDetails build() {
             ResourceNotFoundDetails resourceNotFoundDetails = new ResourceNotFoundDetails();
-            resourceNotFoundDetails.setDeveloperMessage(developerMessage);
             resourceNotFoundDetails.setTitle(title);
+            resourceNotFoundDetails.setStatus(status);
             resourceNotFoundDetails.setDetail(detail);
             resourceNotFoundDetails.setTimestamp(timestamp);
-            resourceNotFoundDetails.setStatus(status);
+            resourceNotFoundDetails.setTransactionId(transactionId);
             return resourceNotFoundDetails;
         }
     }
