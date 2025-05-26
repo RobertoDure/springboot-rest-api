@@ -3,6 +3,7 @@ package pt.com.springboot.api.service.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pt.com.springboot.api.error.InternalServerErrorException;
 import pt.com.springboot.api.error.ResourceNotFoundException;
@@ -11,18 +12,21 @@ import pt.com.springboot.api.model.Student;
 import pt.com.springboot.api.repository.LectureRepository;
 import pt.com.springboot.api.repository.StudentRepository;
 import pt.com.springboot.api.service.StudentService;
-import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Service implementation for managing students.
+ * This class provides methods to perform CRUD operations on students.
+ */
+
 @Service
 public class StudentServiceImpl implements StudentService {
 
     private static final Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class.getName());
-
 
     StudentRepository studentDAO;
 

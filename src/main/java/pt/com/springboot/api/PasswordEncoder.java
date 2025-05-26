@@ -7,6 +7,7 @@ public class PasswordEncoder {
 
     /**
      * Encode password
+     *
      * @param password
      * @return
      */

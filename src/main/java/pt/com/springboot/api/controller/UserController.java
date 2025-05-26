@@ -4,12 +4,11 @@ import io.swagger.annotations.Api;
 import org.slf4j.MDC;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import pt.com.springboot.api.error.BadRequestException;
 import pt.com.springboot.api.model.User;
-import pt.com.springboot.api.service.impl.CustomUserDetailService;
+import pt.com.springboot.api.service.impl.CustomUserDetailServiceImpl;
 import pt.com.springboot.api.util.HttpHeadersUtil;
 
 import javax.validation.Valid;
@@ -20,9 +19,9 @@ import java.util.HashMap;
 @Api(value = "User Endpoint", description = "A REST API for users", tags = {"User Endpoint"})
 public class UserController {
 
-    private CustomUserDetailService userService;
+    private final CustomUserDetailServiceImpl userService;
 
-    public UserController(CustomUserDetailService userService) {
+    public UserController(CustomUserDetailServiceImpl userService) {
         this.userService = userService;
     }
 
@@ -30,19 +29,14 @@ public class UserController {
     public ResponseEntity<?> listAll() {
         HashMap<String, String> headers = new HashMap<>();
         headers.put("transactionId", MDC.get("transactionId"));
-        return new ResponseEntity<>(userService.listAll() ,HttpHeadersUtil.setHttpHeaders(headers), HttpStatus.OK);
-    }
-    // Email recovery
-    @GetMapping("/{email}")
-    public String getEmailRecovery(@PathVariable("email") String email) {
-        return "UserController";
+        return new ResponseEntity<>(userService.listAll(), HttpHeadersUtil.setHttpHeaders(headers), HttpStatus.OK);
     }
 
     @PostMapping
     @Transactional(rollbackFor = Exception.class)
     public ResponseEntity<?> save(@Valid @RequestBody User user) {
         boolean userSaved = userService.saveUser(user);
-        if (!userSaved ) {
+        if (!userSaved) {
             throw new BadRequestException("Student not saved: " + userSaved);
         }
         HashMap<String, String> headers = new HashMap<>();
@@ -60,5 +54,28 @@ public class UserController {
         return "UserController";
     }
 
+    @GetMapping("/recover-password")
+    public ResponseEntity<String> requestPasswordRecovery(@RequestParam String email) {
+        userService.sendRecoveryEmail(email);
+        return ResponseEntity.ok("Recovery email sent successfully");
+    }
+
+    @GetMapping("/recover/{hash}")
+    public ResponseEntity<String> validateRecoveryHash(@PathVariable String hash) {
+        if (userService.validateRecoveryHash(hash)) {
+            return ResponseEntity.ok("Valid recovery link");
+        }
+        return ResponseEntity.badRequest().body("Invalid or expired recovery link");
+    }
+
+    @PostMapping("/reset-password/{hash}")
+    public ResponseEntity<String> resetPassword(
+            @PathVariable String hash,
+            @RequestParam String newPassword) {
+        if (userService.updatePassword(hash, newPassword)) {
+            return ResponseEntity.ok("Password updated successfully");
+        }
+        return ResponseEntity.badRequest().body("Invalid or expired recovery link");
+    }
 
 }

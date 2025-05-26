@@ -3,6 +3,7 @@ package pt.com.springboot.api.model;
 import lombok.Data;
 import lombok.ToString;
 import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.persistence.*;
 
 @Data
@@ -19,6 +20,7 @@ public class User {
     private String username;
 
     @NotEmpty
+    @ToString.Exclude
     private String password;
 
     @NotEmpty
@@ -26,4 +28,8 @@ public class User {
 
     @Column(columnDefinition = "boolean default false")
     private boolean admin;
+
+    @NotEmpty
+    @Column(unique = true)
+    private String email;
 }

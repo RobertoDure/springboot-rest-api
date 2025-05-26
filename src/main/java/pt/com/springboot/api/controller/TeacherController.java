@@ -12,6 +12,7 @@ import pt.com.springboot.api.error.BadRequestException;
 import pt.com.springboot.api.model.Teacher;
 import pt.com.springboot.api.service.TeacherService;
 import pt.com.springboot.api.util.ServiceValidator;
+
 import javax.validation.Valid;
 import java.util.List;
 
@@ -34,16 +35,17 @@ public class TeacherController {
 
     /**
      * Get teacher by id and name filter
-     * @param filter  = id or name
+     *
+     * @param filter      = id or name
      * @param filterValue =
      *                    if filter = id, filterValue = Long
      *                    if filter = name, filterValue = String
      * @return List of students
      */
-    @GetMapping (path = "/query")
+    @GetMapping(path = "/query")
     public ResponseEntity<?> getTeacherQuery(@RequestParam(value = "filter", required = false) String filter,
                                              @RequestParam(value = "filterValue", required = false) String filterValue) {
-        if(!ServiceValidator.filterValidation(filter, filterValue)){
+        if (ServiceValidator.filterValidation(filter, filterValue)) {
             throw new BadRequestException("Filter not Valid: " + filter);
         }
         List<Teacher> teacher = teacherService.getTeacherQueryFilter(filter, filterValue);
@@ -55,7 +57,7 @@ public class TeacherController {
     @ApiOperation(value = "Save a teacher", response = Teacher.class)
     @Transactional(rollbackFor = Exception.class)
     public ResponseEntity<?> save(@Valid @RequestBody Teacher teacher) {
-        return new ResponseEntity<>(teacherService.saveTeacher(teacher),HttpStatus.CREATED);
+        return new ResponseEntity<>(teacherService.saveTeacher(teacher), HttpStatus.CREATED);
     }
 
     @PutMapping

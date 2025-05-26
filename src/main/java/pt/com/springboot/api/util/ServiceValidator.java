@@ -8,13 +8,13 @@ public class ServiceValidator {
             try {
                 Long.parseLong(value);
             } catch (NumberFormatException e) {
-                return false;
+                return true;
             }
         }
         if (filter.equals("name")) {
-            return isStringValid(value);
+            return !isStringValid(value);
         }
-        return true;
+        return false;
     }
 
     public static boolean idValid(String id) {

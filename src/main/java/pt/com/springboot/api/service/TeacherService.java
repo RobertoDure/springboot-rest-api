@@ -9,8 +9,12 @@ import java.util.List;
 public interface TeacherService {
 
     List<Teacher> getTeacherQueryFilter(String filter, String filterValue);
+
     Page<Teacher> listAll(Pageable pageable);
+
     boolean saveTeacher(Teacher teacher);
+
     boolean deleteTeacher(Long id);
+
     boolean updateTeacher(Teacher teacher);
 }

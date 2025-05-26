@@ -3,17 +3,18 @@ package pt.com.springboot.api.controller;
 import io.swagger.annotations.Api;
 import org.slf4j.MDC;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.access.prepost.PreAuthorize;
-import pt.com.springboot.api.error.BadRequestException;
-import pt.com.springboot.api.model.Student;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import pt.com.springboot.api.error.BadRequestException;
+import pt.com.springboot.api.model.Student;
 import pt.com.springboot.api.service.StudentService;
 import pt.com.springboot.api.util.HttpHeadersUtil;
 import pt.com.springboot.api.util.ServiceValidator;
+
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +35,7 @@ public class StudentController {
 
     /**
      * List all students
+     *
      * @param page is the page number
      * @param size is the number of elements per page
      *             Default values are page = 1 and size = 10
@@ -49,18 +51,20 @@ public class StudentController {
         Pageable pageable = new PageRequest(page, size);
         return new ResponseEntity<>(studentService.listAll(pageable), HttpHeadersUtil.setHttpHeaders(headers), HttpStatus.OK);
     }
+
     /**
      * Get student by id and name filter
-     * @param filter  = id or name
+     *
+     * @param filter      = id or name
      * @param filterValue =
      *                    if filter = id, filterValue = Long
      *                    if filter = name, filterValue = String
      * @return List of students
      */
-    @GetMapping (path = "/query")
+    @GetMapping(path = "/query")
     public ResponseEntity<?> getStudentQuery(@RequestParam(value = "filter", required = false) String filter,
                                              @RequestParam(value = "filterValue", required = false) String filterValue) {
-        if(!ServiceValidator.filterValidation(filter, filterValue)){
+        if (ServiceValidator.filterValidation(filter, filterValue)) {
             throw new BadRequestException("Filter not Valid: " + filter);
         }
         HashMap<String, String> headers = new HashMap<>();
@@ -74,7 +78,7 @@ public class StudentController {
     @Transactional(rollbackFor = Exception.class)
     public ResponseEntity<?> save(@Valid @RequestBody Student student) {
         boolean savedStudent = studentService.saveStudent(student);
-        if (!savedStudent ) {
+        if (!savedStudent) {
             throw new BadRequestException("Student not saved: " + student);
         }
         HashMap<String, String> headers = new HashMap<>();
@@ -85,7 +89,7 @@ public class StudentController {
     @DeleteMapping(path = "/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> delete(@PathVariable String id) {
-        if(ServiceValidator.idValid(id)){
+        if (ServiceValidator.idValid(id)) {
             throw new BadRequestException("ID not Valid: " + id);
         }
         HashMap<String, String> headers = new HashMap<>();
@@ -93,6 +97,7 @@ public class StudentController {
         studentService.deleteStudent(id);
         return new ResponseEntity<>(HttpHeadersUtil.setHttpHeaders(headers), HttpStatus.OK);
     }
+
     @PutMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> update(@RequestBody Student student) {
@@ -100,6 +105,6 @@ public class StudentController {
         headers.put("transactionId", MDC.get("transactionId"));
         studentService.updateStudent(student);
         return new ResponseEntity<>(HttpHeadersUtil.setHttpHeaders(headers), HttpStatus.OK);
-    }  
+    }
 
 }

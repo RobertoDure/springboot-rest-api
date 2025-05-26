@@ -1,11 +1,6 @@
 package pt.com.springboot.api.handler;
 
 import org.slf4j.MDC;
-import pt.com.springboot.api.error.details.InternalServerErrorDetails;
-import pt.com.springboot.api.error.InternalServerErrorException;
-import pt.com.springboot.api.error.details.ResourceNotFoundDetails;
-import pt.com.springboot.api.error.ResourceNotFoundException;
-import pt.com.springboot.api.error.details.ValidationErrorDetails;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +10,11 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import pt.com.springboot.api.error.InternalServerErrorException;
+import pt.com.springboot.api.error.ResourceNotFoundException;
+import pt.com.springboot.api.error.details.InternalServerErrorDetails;
+import pt.com.springboot.api.error.details.ResourceNotFoundDetails;
+import pt.com.springboot.api.error.details.ValidationErrorDetails;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 
 /**
  * Rest Exception Handler
+ *
  * @version 1.0
  */
 @ControllerAdvice
@@ -32,6 +33,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     /**
      * Handle resource not found exception
+     *
      * @param rfnException
      * @return
      */
@@ -50,6 +52,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     /**
      * Handle method argument not valid exception
+     *
      * @param manvException
      * @param headers
      * @param status
@@ -58,9 +61,9 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
      */
     @Override
     public ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException manvException,
-                                                          HttpHeaders headers,
-                                                          HttpStatus status,
-                                                          WebRequest request) {
+                                                               HttpHeaders headers,
+                                                               HttpStatus status,
+                                                               WebRequest request) {
         List<FieldError> fieldErrors = manvException.getBindingResult().getFieldErrors();
         String fields = fieldErrors.stream().map(FieldError::getField).collect(Collectors.joining(","));
         String fieldMessages = fieldErrors.stream().map(FieldError::getDefaultMessage).collect(Collectors.joining(","));
@@ -76,8 +79,10 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 .build();
         return new ResponseEntity<>(rnfDetails, HttpStatus.BAD_REQUEST);
     }
+
     /**
      * Handle internal server error exception
+     *
      * @param intException
      * @return ResponseEntity<?>
      */

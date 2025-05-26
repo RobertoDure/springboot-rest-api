@@ -1,8 +1,6 @@
 package pt.com.springboot.api.error.details;
 
 
-import java.time.LocalDateTime;
-
 public class ResourceNotFoundDetails extends ErrorDetails {
 
     public static final class Builder {

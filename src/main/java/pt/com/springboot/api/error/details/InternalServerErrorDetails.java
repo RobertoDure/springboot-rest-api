@@ -1,7 +1,5 @@
 package pt.com.springboot.api.error.details;
 
-import java.time.LocalDateTime;
-
 public class InternalServerErrorDetails extends ErrorDetails {
 
     public static final class Builder {

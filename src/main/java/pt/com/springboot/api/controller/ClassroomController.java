@@ -35,7 +35,7 @@ public class ClassroomController {
     @GetMapping(path = "/{id}")
     public ResponseEntity<?> getStudentById(@PathVariable("id") Long id, Authentication authentication) {
         System.out.println(authentication);
-        verifyIfStudentExists(id);
+        verifyIfClassExists(id);
         Classroom classroom = classDAO.findOne(id);
         return new ResponseEntity<>(classroom, HttpStatus.OK);
     }
@@ -44,26 +44,19 @@ public class ClassroomController {
     @PreAuthorize("hasRole('ADMIN')")
     @Transactional(rollbackFor = Exception.class)
     public ResponseEntity<?> save(@Valid @RequestBody Classroom classroom) {
-        return new ResponseEntity<>(classDAO.save(classroom),HttpStatus.CREATED);
+        return new ResponseEntity<>(classDAO.save(classroom), HttpStatus.CREATED);
     }
 
     @PutMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> update(@RequestBody Classroom classroom) {
-        verifyIfStudentExists(classroom.getId());
+        verifyIfClassExists(classroom.getId());
         classDAO.save(classroom);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    @DeleteMapping
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
-        verifyIfStudentExists(id);
-        classDAO.delete(id);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
 
-    private void verifyIfStudentExists(Long id){
+    private void verifyIfClassExists(Long id) {
         if (classDAO.findOne(id) == null)
-            throw new ResourceNotFoundException("Teacher not found for ID: "+id);
+            throw new ResourceNotFoundException("Teacher not found for ID: " + id);
     }
 }
